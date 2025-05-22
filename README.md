@@ -99,17 +99,13 @@ Deploying a Go web application like this to a cloud server (e.g., AWS EC2, Googl
 ## Directory Structure
 
 ```
-gamemaster-scheduling-app/
-├── cmd/server/main.go        # Main application entry point
-├── internal/                 # Internal application logic
-│   ├── database/             # Database interaction logic, schema
-│   ├── handlers/             # HTTP handlers
-│   └── models/               # Data models (structs)
-├── web/
-│   ├── static/css/style.css  # CSS
-│   └── templates/            # HTML templates (layout, pages, partials)
-├── go.mod                    # Go module definition
-├── go.sum                    # Go module checksums
-├── scheduler.db              # SQLite database file (created at runtime)
-└── README.md                 # This file
+./
+├── gamemaster-scheduling-app/
+│   ├── cmd/server/main.go        # Main application entry point
+│   ├── internal/                 # Internal application logic (database, handlers, models)
+│   ├── web/                      # Web assets (static CSS, HTML templates)
+│   ├── go.mod                    # Go module definition for the application
+│   ├── go.sum                    # Go module checksums
+│   └── scheduler.db              # SQLite database file (created at runtime inside this dir)
+└── README.md                     # This file (at repository root)
 ```
