@@ -1,0 +1,25 @@
+{{/*
+This partial is designed to be included in game_detail.html (inside #chat-messages-section)
+and also rendered standalone by PostChatMessage handler.
+It expects the following in its context:
+- .ChatMessages: A slice of *models.ChatMessage
+- .Error (optional): An error message string if form submission failed.
+*/}}
+
+{{if .Error}}
+    <p style="color: red;">Error: {{.Error}}</p>
+{{end}}
+
+{{range .ChatMessages}}
+    <div class="chat-message">
+        <p>
+            <strong>{{.UserEmail}}</strong>
+            <small>({{.CreatedAt | FormatDateTime}})</small>:
+        </p>
+        <p>{{.MessageContent | Nl2br}}</p>
+    </div>
+{{else}}
+    {{if not .Error}} {{/* Only show "No messages" if there wasn't a submission error */}}
+        <p>No messages yet. Be the first to post!</p>
+    {{end}}
+{{end}}
