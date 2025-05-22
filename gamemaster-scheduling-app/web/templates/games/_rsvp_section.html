@@ -1,0 +1,56 @@
+{{/* This partial is designed to be included in game_detail.html and also rendered standalone by SubmitRSVP handler */}}
+
+{{$gameID := .Game.ID}} {{/* For forming hx-post URLs */}}
+{{$currentUser := .User}} {{/* Current logged-in user, could be nil */}}
+{{$currentUserRSVP := .CurrentUserRSVP}} {{/* Current user's RSVP for this game, could be nil */}}
+{{$allGameRSVPs := .AllGameRSVPs}} {{/* All RSVPs for this game */}}
+
+<h3>RSVP Status</h3>
+
+{{if $currentUser}}
+    <p>Your current status:
+        {{if $currentUserRSVP}}
+            <strong>{{$currentUserRSVP.Status | TitleCase}}</strong>
+            (Last updated: {{$currentUserRSVP.UpdatedAt | FormatDateTime}})
+        {{else}}
+            <em>You have not RSVP'd yet.</em>
+        {{end}}
+    </p>
+
+    <div class="rsvp-actions">
+        <button hx-post="/games/{{$gameID}}/rsvp" hx-vals='{"status": "{{.RSVPStatusAttending}}"}' hx-target="#rsvp-section" hx-swap="innerHTML" class="button-rsvp attending">
+            Attending
+        </button>
+        <button hx-post="/games/{{$gameID}}/rsvp" hx-vals='{"status": "{{.RSVPStatusMaybe}}"}' hx-target="#rsvp-section" hx-swap="innerHTML" class="button-rsvp maybe">
+            Maybe
+        </button>
+        <button hx-post="/games/{{$gameID}}/rsvp" hx-vals='{"status": "{{.RSVPStatusNotAttending}}"}' hx-target="#rsvp-section" hx-swap="innerHTML" class="button-rsvp not-attending">
+            Not Attending
+        </button>
+    </div>
+{{else}}
+    <p><a href="/login?redirect=/games/{{$gameID}}">Login</a> to RSVP.</p>
+{{end}}
+
+<h4>Who's Coming?</h4>
+{{if $allGameRSVPs}}
+    <ul>
+        {{range $allGameRSVPs}}
+            <li>
+                <strong>{{.UserEmail}}</strong>: {{.Status | TitleCase}}
+                <em>(on {{.UpdatedAt | FormatDateTime}})</em>
+            </li>
+        {{else}}
+            <li>No RSVPs yet.</li>
+        {{end}}
+    </ul>
+{{else}}
+    <p>No one has RSVP'd yet.</p>
+{{end}}
+
+{{/* Template helper for title casing, will add to utils.go if not there. For now, assume it exists or handle in Go. */}}
+{{/* For the constants like .RSVPStatusAttending, they need to be passed in the data map to the template if used directly like this.
+     Alternatively, the hx-vals can just use the string directly: hx-vals='{"status": "attending"}'
+     Let's use direct strings in hx-vals as it's simpler and less prone to template context issues.
+     The Go constants models.RSVPStatusAttending are used in the Go handler.
+*/}}

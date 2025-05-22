@@ -1,0 +1,26 @@
+{{template "layout" .}}
+
+{{define "content"}}
+<div id="registration-form-container">
+    <h2>Register</h2>
+    <form hx-post="/register" hx-target="#registration-form-container" hx-swap="outerHTML">
+        {{if .Error}}
+        <p class="error">{{.Error}}</p>
+        {{end}}
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required value="{{.Form.Email}}">
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div>
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" id="confirm_password" name="confirm_password" required>
+        </div>
+        <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="/login">Login here</a>.</p>
+</div>
+{{end}}

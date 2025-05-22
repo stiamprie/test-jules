@@ -1,0 +1,14 @@
+{{template "layout" .}}
+
+{{define "content"}}
+<div class="error-page" style="text-align: center; padding: 40px 20px;">
+    <h2>Error {{.StatusCode}}: {{.StatusText}}</h2>
+    {{if .Title}}
+        <p style="font-size: 1.2em; color: #555;">{{.Title}}</p>
+    {{end}}
+    {{if .Message}}
+        <p>{{.Message}}</p>
+    {{end}}
+    <p style="margin-top: 30px;"><a href="/games" class="button">Go to Games List</a></p>
+</div>
+{{end}}

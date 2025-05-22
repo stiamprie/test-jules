@@ -1,0 +1,40 @@
+{{template "layout" .}}
+
+{{define "content"}}
+<main>
+    <h2>Available Games</h2>
+    {{if .User}}
+        <p><a href="/games/new" class="button">Host a New Game</a></p>
+    {{end}}
+
+    {{if .Games}}
+        <ul class="game-list">
+            {{range .Games}}
+            <li class="game-item">
+                <h3><a href="/games/{{.ID}}">{{.Title}}</a></h3>
+                <p><strong>Date:</strong> {{.GameDateTime | FormatDateTime}}</p>
+                <p><strong>Location:</strong> {{.Location}}</p>
+                <p><em>Hosted by GM ID: {{.GMID}}</em></p> 
+                <!-- Later, replace GMID with GM's name -->
+            </li>
+            {{else}}
+            <p>No games scheduled yet. 
+                {{if .User}}
+                    Why not <a href="/games/new">host one</a>?
+                {{else}}
+                    Check back later or <a href="/login">login</a> to host one.
+                {{end}}
+            </p>
+            {{end}}
+        </ul>
+    {{else}}
+        <p>No games are currently scheduled. 
+            {{if .User}}
+                Please check back later or <a href="/games/new">host your own!</a>
+            {{else}}
+                Please check back later or <a href="/login">login</a> to host one.
+            {{end}}
+        </p>
+    {{end}}
+</main>
+{{end}}
